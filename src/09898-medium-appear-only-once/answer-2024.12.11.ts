@@ -21,14 +21,13 @@
 //     : [F, ...FindEles<T, R>]
 //   : []
 
-
-type FindEles<T extends number[], N extends number[] = T> =
-N extends [infer F extends number, ...infer R extends number[]]
-  ? T extends [...infer A, F, ...infer B, F, ...infer C]
-    ? FindEles<T, R>
-    : [F, ...FindEles<T, R>]
-  : []
-
+// 所谓的只出现一次，就是查看除自己以外，其它元素是否还存在有与之相同的，所以维护两个数组，一个用于收集结果，一个用于收集这个数之前的
+type FindEles<T extends any[], U extends any[] = [], O extends any[] = []> =
+  T extends [infer F, ...infer R]
+  ? F extends [...R, ...O][number]
+    ? FindEles<R, U, [...O, F]>
+    : FindEles<R, [...U, F], [...O, F]>
+  : U
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 import { ExpectFalse, NotEqual } from '@type-challenges/utils'
