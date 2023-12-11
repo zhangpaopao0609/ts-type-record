@@ -18,16 +18,22 @@
 
 /* _____________ Your Code Here _____________ */
 
-type ParseUrlParams<T extends string, Flag extends boolean = false, P extends string = never, U extends string = never> =
-  T extends `${infer F}${infer R}`
-  ? F extends "/"
-    ? ParseUrlParams<R, false, P, U | P>
-    : F extends ":"
-      ? ParseUrlParams<R, true, '', U>
-      : Flag extends false
-        ? ParseUrlParams<R, false, P, U>
-        : ParseUrlParams<R, true, `${P}${F}`, U>
-  : U | P
+// type ParseUrlParams<T extends string, Flag extends boolean = false, P extends string = never, U extends string = never> =
+//   T extends `${infer F}${infer R}`
+//   ? F extends "/"
+//     ? ParseUrlParams<R, false, P, U | P>
+//     : F extends ":"
+//       ? ParseUrlParams<R, true, '', U>
+//       : Flag extends false
+//         ? ParseUrlParams<R, false, P, U>
+//         : ParseUrlParams<R, true, `${P}${F}`, U>
+//   : U | P
+
+type ParseUrlParams<T> = T extends `${string}:${infer R}`
+  ? R extends `${infer P}/${infer L}`
+    ? P | ParseUrlParams<L>
+    : R
+  : never
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
