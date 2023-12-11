@@ -15,14 +15,19 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Shift<T extends any[]> = T extends [any, ...infer R] ? R : [];
+// type Shift<T extends any[]> = T extends [any, ...infer R] ? R : [];
 
-type Zip<T extends any[], U extends any[]> =
-  T extends []
-  ? []
-  : U extends []
-    ? []
-    : [[T[0], U[0]], ...Zip<Shift<T>, Shift<U>>]
+// type Zip<T extends any[], U extends any[]> =
+//   T extends []
+//   ? []
+//   : U extends []
+//     ? []
+//     : [[T[0], U[0]], ...Zip<Shift<T>, Shift<U>>]
+
+type Zip<A extends any[], B extends any[], L extends any[] = []> =
+  L['length'] extends A['length'] | B['length']
+  ? L
+  : Zip<A, B, [...L, [A[L['length']], B[L['length']]]]>
 
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
