@@ -42,6 +42,21 @@ type dd = cc<never>
 
 // 总的来说，`never extends never` 会返回 `never`，而 `[never] extends [never]` 不会返回 `never`。
 
+type ff<T extends any[]> = T['length'];
+type gg = ff<string[]>
+
+// 在 TypeScript 中，`T['length']` 是索引访问类型，它用于访问 `T` 类型的 `'length'` 属性的类型。
+
+// 在你的例子中，`T` 是一个任意数组类型，`T['length']` 就是访问这个数组的 `'length'` 属性的类型。在 JavaScript（以及 TypeScript）中，数组的 `'length'` 属性是一个数字，表示数组中的元素数量。因此，`T['length']` 的类型就是 `number`。
+
+// 所以，当你定义 `type gg = ff<string[]>;` 的时候，`T` 是 `string[]` 类型，`T['length']` 就是 `string[]['length']`，也就是 `number` 类型。因此，`gg` 的类型就是 `number`。
+
+// 在 TypeScript 中，当你使用具体的元组类型（如 `[string]`），TypeScript 会知道这个元组的确切长度。在你的例子中，`[string]` 是一个只有一个元素的元组，所以它的长度是 `1`。
+
+// 当你写 `type gg = ff<[string]>;` 时，`T` 是 `[string]` 类型，`T['length']` 就是 `[string]['length']`。因为 `[string]` 是一个长度为 `1` 的元组，所以 `[string]['length']` 的类型就是具体的数字 `1`，而不是 `number`。
+
+// 这是 TypeScript 的一种类型推导功能，它可以推导出具体的元组长度，而不仅仅是说长度是一个数字。
+
 /* _____________ Test Cases _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 
