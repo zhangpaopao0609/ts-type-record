@@ -24,16 +24,22 @@
 
 /* _____________ Your Code Here _____________ */
 
-type Insert<T extends unknown[], U> =
-  T extends [infer F, ...infer L]
-  ? [F, U, ...L] | [F, ...Insert<L, U>] 
-  : [U]
+// type Insert<T extends unknown[], U> =
+//   T extends [infer F, ...infer L]
+//   ? [F, U, ...L] | [F, ...Insert<L, U>] 
+//   : [U]
 
-type PermutationsOfTuple<T extends unknown[], R extends unknown[] = []> = 
-  T extends [infer F, ...infer L]
-  ? PermutationsOfTuple<L, Insert<R,F> | [F, ...R]>
-  : R
-
+// type PermutationsOfTuple<T extends unknown[], R extends unknown[] = []> = 
+//   T extends [infer F, ...infer L]
+//   ? PermutationsOfTuple<L, Insert<R,F> | [F, ...R]>
+//   : R
+type PermutationsOfTuple<T extends unknown[], Prev extends unknown[] = []> =
+  T extends [infer First, ...infer Rest]
+  ? [First, ...PermutationsOfTuple<[...Prev, ...Rest]>] | 
+    (Rest extends [] 
+    ? never 
+    : PermutationsOfTuple<Rest, [...Prev, First]>)
+  : []
 
 type cc = PermutationsOfTuple<[any, unknown, never]>
 /* _____________ Test Cases _____________ */
